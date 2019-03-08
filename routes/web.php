@@ -11,8 +11,13 @@
 |
 */
 
-Route::get('/', 'PagesController@root')->name('root');
+// 在之前的路由后面配上中间件
+Route::get('/', 'PagesController@root')->name('root')->middleware('verified');
 
+Auth::routes(['verify' => true]);
 
-Auth::routes();
+// auth 中间件代表需要登录，verified中间件代表需要经过邮箱验证
+Route::group(['middleware' => ['auth', 'verified']], function() {
+    Route::get('user_addresses', 'UserAddressesController@index')->name('user_addresses.index');
+});
 
