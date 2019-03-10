@@ -12,7 +12,8 @@
 */
 
 // 在之前的路由后面配上中间件
-Route::get('/', 'PagesController@root')->name('root')->middleware('verified');
+//Route::get('/', 'PagesController@root')->name('root')->middleware('verified');
+Route::redirect('/', '/products')->name('root');
 
 Auth::routes(['verify' => true]);
 
@@ -24,9 +25,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('user_addresses/{user_address}', 'UserAddressesController@edit')->name('user_addresses.edit');
     Route::put('user_addresses/{user_address}', 'UserAddressesController@update')->name('user_addresses.update');
     Route::delete('user_addresses/{user_address}', 'UserAddressesController@destroy')->name('user_addresses.destroy');
-    Route::redirect('/', '/products')->name('root');
+
     Route::post('products/{product}/favorite', 'ProductsController@favor')->name('products.favor');
     Route::delete('products/{product}/favorite', 'ProductsController@disfavor')->name('products.disfavor');
+    Route::get('products/favorites', 'ProductsController@favorites')->name('products.favorites');
 });
 
 Route::get('products', 'ProductsController@index')->name('products.index');
